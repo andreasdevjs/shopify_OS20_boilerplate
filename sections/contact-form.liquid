@@ -1,0 +1,47 @@
+{% if section.settings.title != blank %}
+  <h1>{{ section.settings.title }}</h1>
+{% endif %}
+  
+{% form 'contact' %}
+
+  {% if form.errors %}
+    <p>Your message was not sent</p> 
+    {% for error in form.errors %}
+      <p>{{ form.errors.messages[error] }}</p>
+    {% endfor %}
+  {% elsif form.posted_successfully? %}
+    <p>Your message was sent successfully</p>
+  {% endif %}
+
+  <label for="contact_name">Name</label>
+  <input type="text" name="contact[name]" id="contact_name">
+
+  <label for="contact_email">Email address</label>
+  <input type="email" name="contact[email]" id="contact_email">
+
+  <label for="contact_message">Message</label>
+  <textarea name="contact[body]" id="contact_message"></textarea>
+
+  <input type="submit" value="Submit message">
+
+{% endform %}
+
+
+
+{% schema %}
+{
+  "name": "Contact Form",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact Form"
+    }
+  ]
+}
+{% endschema %}
