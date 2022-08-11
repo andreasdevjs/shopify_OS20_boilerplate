@@ -7,9 +7,8 @@
 - Cart Page ✅
 - Collection List Page ✅
 - Collection Page ✅
+- Home Page (Index) ✅
 - Product Page
-- Home Page (Index)
 - Search Page
 - Gift Card Page
 - Contact Page 
-

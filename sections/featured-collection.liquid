@@ -1,0 +1,40 @@
+<h1>{{ section.settings.title }}</h1>
+
+{% for product in section.settings.featured_collection.products limit: section.settings.number_of_products_to_show %}
+  {% render 'product-card', product_product: product %}
+{% else %}
+  <p>Nothing to show in this collection</p>
+{% endfor %}
+
+
+{% schema %}
+{
+  "name": "Featured Collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Featured Collection",
+      "label": "Title"
+    },
+    {
+      "type": "collection",
+      "id": "featured_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "number_of_products_to_show",
+      "min": 4,
+      "max": 12,
+      "default": 4,
+      "label": "Number of products to show"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection"
+    }
+  ]
+}
+{% endschema %}
