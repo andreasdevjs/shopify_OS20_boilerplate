@@ -8,7 +8,7 @@
 - Collection List Page ✅
 - Collection Page ✅
 - Home Page (Index) ✅
+- Contact Page ✅
 - Product Page
 - Search Page
 - Gift Card Page
-- Contact Page 
