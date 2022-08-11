@@ -1,0 +1,11 @@
+{% if pagination.pages > 1 %}
+  <nav role="navigation">
+    {% if pagination.previous %}
+      <a href="{{ pagination.previous.url }}">Previous</a>
+    {% endif %}
+
+    {% if pagination.next %}
+      <a href="{{ pagination.next.url }}">Next</a>
+    {% endif %}
+  </nav>
+{% endif %}

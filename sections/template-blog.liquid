@@ -1,0 +1,51 @@
+<div>
+  {% paginate blog.articles by section.settings.number_of_blog_posts %}
+    <h1>{{ blog.title }}</h1>
+    {% for article in blog.articles %}
+      <div>
+        {% if article.image %}
+          <a href="{{ article.url }}"><img src="{{ article.image | img_url: 'medium' }}" alt="{{ article.image.alt }}"></a>
+        {% else %}
+          {{ 'image' | placeholder_svg_tag: '' }}
+        {% endif %}
+
+        <div>
+          <h1>{{ article.title }}</h1>
+          {% if article.excerpt.size > 0 %}
+            <p>{{ article.excerpt | strip_html | truncatewords: 15 }}</p>
+          {% else %}
+            <p>{{ article.content | strip_html | truncatewords: 15 }}</p>
+          {% endif %}
+          <a href="{{ article.url }}">{{ section.settings.blog_read_more }}</a>
+        </div>
+      </div>
+    {% endfor %}
+      
+    {% render 'pagination', pagination: paginate %}
+    
+  {% endpaginate %}
+</div>
+
+
+{% schema %}
+{
+  "name": "Blog",
+  "settings": [
+    {
+      "type": "text",
+      "id": "blog_read_more",
+      "label": "Read more label",
+      "default": "Read more"
+    },
+    {
+      "type": "range",
+      "id": "number_of_blog_posts",
+      "step": 1,
+      "min": 1,
+      "max": 6,
+      "label": "Blog posts per page",
+      "default": 3
+    }
+  ]
+}
+{% endschema %}

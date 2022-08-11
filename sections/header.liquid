@@ -1,0 +1,37 @@
+{% liquid 
+  if section.settings.menu.links == blank
+    assign main_menu_linklist = linklists[section.settings.menu].links
+  else
+    assign main_menu_linklist = section.settings.menu.links
+  endif
+%}
+
+<header id="header" class="header">
+  <nav role="navigation">
+    {% for link in main_menu_linklist %}
+      {% if link.links != blank %}
+        {% assign link_handle = link.handle | replace: '-', '_' %}
+        {% for childlink in link.links %}
+          <a href="{{ childlink.url }}">{{ childlink.title }}</a>
+        {% endfor %}     
+      {% else %}
+        <a href="{{ link.url }}">{{ link.title }}</a>
+      {% endif %}
+    {% endfor %}
+  </nav>     
+</header>
+        
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "main-menu",
+      "label": "Heading Navigation Menu"
+    }
+  ]
+}
+{% endschema %}

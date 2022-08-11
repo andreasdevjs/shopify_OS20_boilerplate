@@ -1,0 +1,75 @@
+{% if cart.item_count > 0 %}
+  <h1>Your cart</h1>        
+  <div>
+    <form action="{{ routes.cart_url }}" method="POST" novalidate>
+      <table>
+        <thead>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Total Price</th>
+        </thead>
+        <tbody>
+          {% for item in cart.items %}
+            <tr>
+              <td>
+                <a href="{{ item.url }}">
+                  {% if item.image %}
+                    <img src="{{ item.image | img_url: 'small' }}" alt="{{ item.title | escape }}">
+                  {% else %}
+                    {{ 'product-1' | placeholder_svg_tag: '' }}
+                  {% endif %}
+                </a>
+              </td>
+              <td>
+                <a href="{{ item.url }}">{{ item.product.title | truncatewords: 5 }}</a>
+                <span>{{ item.variant.title }}</span>
+                <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0">Remove</a>
+              </td>
+              <td>
+                <input type="number" name="updates[]" value="{{ item.quantity }}" min="1" id="updates_{{ forloop.index }}">
+              </td>
+              <td>
+                {{ item.line_price | money }}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div>
+        <label for="cart_notes">Cart notes</label>
+        <textarea name="note" id="cart_notes"></textarea>
+      </div>
+      <div>
+        <h3>Subtotal: {{ cart.total_price | money }}</h3>
+        <button type="submit" name="update">Update Cart</button>
+        <button type="submit" name="checkout">Go to Checkout</button>
+      </div>
+    </form>
+  </div>
+{% else %}
+  <h1>Your cart is empty</h1>
+  <a href="{{ routes.all_products_collection_url }}">Continue shopping</a>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Template Cart",
+  "blocks": [
+    {
+      "type": "subtotal",
+      "name": "Subtotal",
+      "limit": 1
+    },
+    {
+      "type": "update_button",
+      "name": "Update Button",
+      "limit": 1
+    },
+    {
+      "type": "checkout_button",
+      "name": "Checkout Button",
+      "limit": 1
+    }
+  ]
+}
+{% endschema %}

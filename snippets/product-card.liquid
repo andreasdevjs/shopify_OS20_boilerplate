@@ -1,0 +1,13 @@
+<div>
+  <a href="{{ product_product.url }}">
+    {% if product_product.featured_image %}
+      <img src="{{ product_product.featured_image | img_url: 'medium' }}" alt="{{ product_product.featured_image.alt }}">
+    {% else %}
+      {{ 'product-1' | placeholder_svg_tag: '' }}
+    {% endif %}
+  </a>
+  
+  <p>{{ product_product.vendor }}</p>
+  <a href="{{ product_product.url }}">{{ product_product.title }}</a>
+  <p>{{ product_product.price | money }}</p>
+</div>
