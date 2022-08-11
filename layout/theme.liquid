@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ request.locale.iso_code }}">
   <head>
-
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -34,11 +33,8 @@
     {{ content_for_header }}
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
-    
   </head>
-
   <body>
-    
     {% section 'header' %}
 
     <main id="main" class="main" role="main" tabindex="-1">
@@ -48,6 +44,5 @@
     {% section 'footer' %}
     
     <script src="{{ 'index.js' | asset_url }}" defer="defer"></script>
-
   </body>
 </html>
