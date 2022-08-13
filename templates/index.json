@@ -1,5 +1,8 @@
 {
   "sections": {
+    "store-name": {
+      "type": "store-name"
+    },
     "featured-collection": {
       "type": "featured-collection",
       "settings": {
@@ -7,5 +10,5 @@
       }
     }
   },
-  "order": ["featured-collection"]
+  "order": ["store-name", "featured-collection"]
 }
