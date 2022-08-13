@@ -1,0 +1,163 @@
+{% assign selected_variant = product.selected_or_first_available_variant %}
+
+{% for media in product.media %}
+  {% render 'product-media', media: media %}
+{% endfor %}
+
+{% form 'product', product, id: 'product-form', novalidate: 'novalidate' %}
+  <input type="hidden" name="id" value="{{ selected_variant.id }}">
+  {% for block in section.blocks %}
+    {% case block.type %}
+      {% when 'vendor' %}
+        {{ product.vendor }}
+      {% when 'title' %}
+        <h1>{{ product.title }}</h1>
+      {% when 'price' %}
+        <div id="price-{{ section.id }}">
+          <span>{{ selected_variant.compare_at_price | money }}</span>
+          <span>{{ selected_variant.price | money }}</span>
+          {% if selected_variant.price < selected_variant.compare_at_price %}
+            <span>Sale</span>
+          {% endif %}
+        </div>
+      {% when 'variant_selector' %}
+        {% unless product.has_only_default_variant %}
+          <variant-selector data-url="{{ product.url }}" data-section="{{ section.id }}">
+            {% for option in product.options_with_values %}
+              <label for="option-{{ section.id }}-{{ forloop.index0 }}">{{ option.name }}</label>
+              <select name="options[{{ option.name | escape }}]" id="option-{{ section.id }}-{{ forloop.index0 }}">
+                {% for value in option.values %}
+                  <option value="{{ value | escape }}" {% if option.selected_value == value %} selected="selected" {% endif %}>{{ value }}</option>
+                {% endfor %}
+              </select>
+              <script type="application/json">
+                {{ product.variants | json }}
+              </script>
+            {% endfor %}
+          </variant-selector>
+        {% endunless %}
+      {% when 'quantity' %}
+        <label for="quantity-{{ section.id }}">Quantity</label>
+        <input type="number" name="quantity" id="quantity-{{ section.id }}" value="1" min="1">
+      {% when 'description' %}
+        <p>{{ product.description }}</p>
+      {% when 'checkout_buttons' %}
+        <button type="submit" name="add" {% if selected_variant.available == false %} disabled {% endif %}>
+          {% if selected_variant.available == false %}
+              Sold out
+          {% else %}
+              Add to cart
+          {% endif %}
+        </button>
+      {% else %}
+                
+    {% endcase %}
+  {% endfor %}
+{% endform %}
+            
+
+<script>
+  class VariantSelector extends HTMLElement {
+    constructor() {
+      super();
+      this.addEventListener("change", this.onVariantChange);
+    }
+
+    onVariantChange() {
+      this.getSelectedOptions();
+      this.getSelectedVariant();
+      if (this.currentVariant) {
+        this.updateURL();
+        this.updateFormID();
+        this.updatePrice();
+      }
+    }
+
+    getSelectedOptions() {
+      this.options = Array.from(this.querySelectorAll('select'), (select) => select.value);
+      console.log(this.options);
+    }
+
+    getVariantJSON() {
+      this.variantData = this.variantData || JSON.parse(this.querySelector('[type="application/json"]').textContent);
+      return this.variantData;
+    }
+
+    getSelectedVariant() {
+      this.currentVariant = this.getVariantJSON().find(variant => {
+        const findings = !variant.options.map((option, index) => {
+          return this.options[index] === option;
+        }).includes(false);
+        if (findings) return variant;
+      });
+      console.log(this.currentVariant);
+    }
+
+    updateURL() {
+      if (!this.currentVariant) return;
+      window.history.replaceState({}, '', `${this.dataset.url}?variant=${this.currentVariant.id}`);
+    }
+
+    updateFormID() {
+      const form_input = document.querySelector("#product-form").querySelector('input[name="id"]');
+      form_input.value = this.currentVariant.id;
+    }
+
+    updatePrice() {
+      fetch(`${this.dataset.url}?variant=${this.currentVariant.id}&section_id=${this.dataset.section}`)
+        .then((response) => response.text())
+        .then((responseText) => {
+          const id = `price-${this.dataset.section}`;
+          const html = new DOMParser().parseFromString(responseText, 'text/html');
+          const oldPrice = document.getElementById(id);
+          const newPrice = html.getElementById(id);
+          if (oldPrice && newPrice) oldPrice.innerHTML = newPrice.innerHTML;
+        });
+    }
+  }
+  customElements.define("variant-selector", VariantSelector);
+</script>
+
+
+{% schema %}
+{
+  "name": "Product",
+  "blocks": [
+    {
+      "type": "vendor",
+      "name": "Vendor",
+      "limit": 1
+    },
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1
+    },
+    {
+      "type": "variant_selector",
+      "name": "Variant Selector",
+      "limit": 1
+    },
+    {
+      "type": "quantity",
+      "name": "Quantity",
+      "limit": 1
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1
+    },
+    {
+      "type": "checkout_buttons",
+      "name": "Checkout Buttons",
+      "limit": 1
+    }
+  ]
+}
+{% endschema %}
