@@ -9,6 +9,6 @@
 - Collection Page ✅
 - Home Page (Index) ✅
 - Contact Page ✅
-- Product Page
+- Product Page ✅
 - Search Page
 - Gift Card Page
