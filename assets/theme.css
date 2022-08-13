@@ -1,1 +1,11 @@
-/* Your theme styles */
+/* Generic Theme Styles */
+:root {
+  --black: #1D1D1D;
+  --main-font: Helvetica, Arial, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --black: #ececec;
+  }
+}
