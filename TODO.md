@@ -10,5 +10,6 @@
 - Home Page (Index) ✅
 - Contact Page ✅
 - Product Page ✅
-- Search Page
+- Search Funtionality (Header) ✅
+- Search Result Page ✅
 - Gift Card Page

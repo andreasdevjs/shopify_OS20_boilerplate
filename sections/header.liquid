@@ -18,6 +18,10 @@
         <a href="{{ link.url }}">{{ link.title }}</a>
       {% endif %}
     {% endfor %}
+    <form action="{{ routes.search_url }}" method="get">
+      <input type="search" name="q" placeholder="Search">
+      <button type="submit">Search</button>
+    </form>
   </nav>     
 </header>
         
