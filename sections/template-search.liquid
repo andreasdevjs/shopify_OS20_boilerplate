@@ -1,9 +1,5 @@
 {% paginate search.results by 10 %}
   <h1>Search Results</h1>
-  <form action="{{ routes.search_url }}" method="get">
-    <input type="search" name="q" placeholder="Search" value="{{ search.terms | escape }}">
-    <button type="submit">Search</button>
-  </form>
   {% if search.performed %}
     {% if search.results.size > 0 %}
       <p>{{ search.results.size }} results for the search term {{ search.terms | escape }}</p>
