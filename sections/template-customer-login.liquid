@@ -1,0 +1,36 @@
+<h1>Sign in to your account</h1>
+{% form 'customer_login' %}
+  {% if form.errors %}
+    {{ form.errors | default_errors }}
+  {% endif %}
+  <label for="email_address">Email</label>
+  <input type="email" name="customer[email]" id="email_address" autocomplete="email" placeholder="Email">
+  {% if form.password_needed %}
+    <label for="password">Password</label>
+    <input type="password" name="customer[password]" id="password" autocomplete="current-password" placeholder="Password">
+  {% endif %}
+  <button type="submit">Sign in</button>
+{% endform %}
+
+<a href="javascript:void(0)" onclick="toggleRecoverPasswordForm()">Forgot your password?</a>
+
+<div id="recover-password-form" style="display: none;">
+  <h2>I forgot my password</h2>
+  {% form 'recover_customer_password' %}
+  {{ form.errors | default_errors }}
+  <label for="customer_email">Email</label>
+  <input type="email" name="email" id="customer_email" autocomplete="email" placeholder="Email">
+  <button type="submit">Recover password</button>
+  {% endform %}
+</div>
+
+<script>
+  function toggleRecoverPasswordForm() {
+    const passwordForm = document.getElementById("recover-password-form");
+    if (passwordForm.style.display === "none") {
+      passwordForm.style.display = "block";
+    } else {
+      passwordForm.style.display = "none";
+    }
+  }
+</script>
