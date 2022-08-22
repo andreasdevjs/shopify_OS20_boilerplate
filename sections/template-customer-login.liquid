@@ -12,15 +12,16 @@
     {% endif %}
     <button type="submit">Sign in</button>
     <a href="javascript:void(0)" onclick="toggleRecoverPasswordForm()">Forgot your password?</a>
+    <a style="text-decoration: underline" href="/account/register">Don't have an account? Create one</a>
   {% endform %}
 </div>
 
 <div id="recover-password-form" style="display: none;">
-  <h2>I forgot my password</h2>
+  <h2>Recover your password</h2>
   {% form 'recover_customer_password' %}
   {{ form.errors | default_errors }}
   <label for="customer_email">Email</label>
-  <input type="email" name="email" id="customer_email" autocomplete="email" placeholder="Email">
+  <input type="email" name="email" id="customer_email" autocomplete="email" placeholder="Email address">
   <button type="submit">Recover password</button>
   <a href="javascript:void(0)" onclick="toggleRecoverPasswordForm()">Back to login</a>
   {% endform %}
